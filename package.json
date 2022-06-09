@@ -5,7 +5,9 @@
     "license": "ISC",
     "scripts": {
         "gulp": "gulp",
-        "gulp prod": "gulp prod"
+        "gulp prod": "gulp prod",
+        "gulp clean": "gulp clean",
+        "gulp img": "gulp img"
     },
     "repository": {
         "type": "git",

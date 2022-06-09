@@ -3,3 +3,5 @@ node_modules/
 
 # build directories
 app/
+dev/img-big/mobi/
+dev/img-big/webp/
