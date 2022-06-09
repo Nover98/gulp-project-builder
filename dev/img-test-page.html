@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>img test page</title>
+        <link rel="stylesheet" href="css/index.css" />
+        <style>
+            img {
+                max-width: 100%;
+                display: block;
+            }
+            .list {
+                list-style-type: decimal;
+            }
+            .list li {
+                list-style-type: decimal;
+                padding: 0;
+                font-size: 20px;
+                font-family: sans-serif;
+                margin: 40px 0;
+                border: 1px solid black;
+            }
+            .text {
+                padding: 20px;
+                margin: 0;
+                margin-bottom: 20px;
+                background-color: #f8f7f2;
+            }
+        </style>
+    </head>
+    <body>
+        @@include('html-components/layout/_header.html')
+        <h1>Смотреть результаты через инспектор HTML</h1>
+        <h2>
+            Все дополнительные атрибуты, классы и тд ставить между img и src,
+            иначе может что-то не сработать
+        </h2>
+        <ol class="list">
+            <li>
+                <!-- 1 -->
+                <p class="text">Стандартная картинка без ничего</p>
+                <img src="img/about_us/menu.jpg" alt="" />
+            </li>
+            <li>
+                <!-- 2 -->
+                <p class="text">
+                    чтобы не изменять картинку нужно добавить между &lt;img и
+                    src атрибут noSource - принудительно не изменять, у картинки
+                    noSorce автоматически будет удалён
+                </p>
+                <img noSource src="img/about_us/menu.jpg" alt="" />
+            </li>
+            <li>
+                <!-- 3 -->
+                <p class="text">svg картинка (она никак не изменяется)</p>
+                <img src="img/preloader.svg" alt="" />
+            </li>
+            <li>
+                <!-- 4 -->
+                <p class="text">
+                    если путь к картинке начинается не с "img/", то ничего не
+                    заменять, Если начинается с img, но по такому пути картинки
+                    нет, то замена на конструкцию произойдёт всё равно
+                </p>
+                <img src="images/about_us/menu.jpg" alt="" />
+                <img
+                    src="https://pbs.twimg.com/profile_images/758084549821730820/_HYHtD8F_400x400.jpg"
+                    alt=""
+                />
+            </li>
+
+            <li>
+                <!-- 5 -->
+                <p class="text">
+                    если у картинки стоит атрибут
+                    <em>sourceClass="some-class"</em>, то значение арибута
+                    станет классом для source, а из картинки атриубт будет
+                    удалён
+                </p>
+                <img
+                    sourceClass="some-class"
+                    src="img/about_us/menu.jpg"
+                    alt=""
+                />
+            </li>
+            <li>
+                <!-- 6 -->
+                <p class="text">data-src - добавляет data- к srcset</p>
+                <img data-src="img/about_us/menu.jpg" alt="" />
+            </li>
+            <li>
+                <!-- 7 -->
+                <p class="text">
+                    non-resize картинка (к назвванию картинки добавлена
+                    приставка "nr_", вместо трёх сорсов подставится 1, только
+                    для вебп, без медиазапросов
+                </p>
+                <img src="img/about_us/nr_menu.jpg" alt="" />
+            </li>
+            <li>
+                <!-- 8 -->
+                <p class="text">
+                    у картинки есть класс и id (проверка работы регулярки)
+                </p>
+                <img
+                    class="some-class"
+                    id="some-id"
+                    src="img/about_us/menu.jpg"
+                    alt=""
+                />
+            </li>
+            <li>
+                <!-- 9 -->
+                <p class="text">
+                    в редакторе тег разделён переносом строк для каждого
+                    атрибута (проверка работы регулярки)
+                    <br />
+                    выглядит вот так:
+                </p>
+                <pre>
+					&lt;img
+						class="asdas"
+						src="img/about_us/menu.jpg"
+						width="200"
+						height="100"
+						alt="asdas"
+					/&gt;
+				</pre
+                >
+                <img
+                    class="asdas"
+                    src="img/about_us/menu.jpg"
+                    width="200"
+                    height="100"
+                    alt="asdas"
+                />
+            </li>
+        </ol>
+        @@include('html-components/layout/_footer.html')
+    </body>
+</html>

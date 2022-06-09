@@ -1,0 +1,43 @@
+{
+    "name": "test",
+    "version": "0.0.1",
+    "main": "index.js",
+    "license": "ISC",
+    "scripts": {
+        "gulp": "gulp",
+        "gulp prod": "gulp prod"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Nover98/gulp-project-builder"
+    },
+    "dependencies": {
+        "jquery": "^3.6.0"
+    },
+    "devDependencies": {
+        "autoprefixer": "^10.4.0",
+        "browser-sync": "2.23.6",
+        "del": "^6.0.0",
+        "glob": "^7.1.7",
+        "gulp": "^4.0.2",
+        "gulp-cached": "^1.1.1",
+        "gulp-cli": "^2.3.0",
+        "gulp-dependents": "^1.2.5",
+        "gulp-file-include": "^2.3.0",
+        "gulp-if": "^3.0.0",
+        "gulp-imagemin": "^7.1.0",
+        "gulp-newer": "^1.4.0",
+        "gulp-postcss": "^9.0.1",
+        "gulp-replace": "^1.0.0",
+        "gulp-responsive": "^3.0.1",
+        "gulp-sass": "^5.0.0",
+        "gulp-sourcemaps": "^3.0.0",
+        "gulp-webp": "^4.0.1",
+        "node-css-mqpacker": "^9.0.0",
+        "postcss": "^8.4.4",
+        "postcss-csso": "^5.0.1",
+        "sass": "^1.36.0",
+        "sort-css-media-queries": "^2.0.4",
+        "webpack-stream": "^6.1.2"
+    }
+}

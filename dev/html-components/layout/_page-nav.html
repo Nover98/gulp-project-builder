@@ -1,0 +1,80 @@
+<div class="page-nav" id="page-nav">
+    <!-- блок с id="page-nav" на проде надо удалить -->
+    <ul>
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="img-test-page.html">Тест замены картинок</a></li>
+        <li><a href="about.html">О нас</a></li>
+    </ul>
+    <p class="panel">
+        <button class="open">Pages</button>
+        <button class="close">Close</button>
+    </p>
+    <script>
+        let style = document.createElement("style");
+        style.innerHTML = `.page-nav {
+                position: fixed;
+                right: 50px;
+                bottom: 50px;
+                background-color: rgba(230, 230, 230);
+                border: 1px solid black;
+                border-top: none;
+                cursor: pointer;
+                z-index: 100;
+                font-family: sans-serif;
+            }
+            .page-nav button {
+                width: 100%;
+                background-color: lightgray;
+            }
+            .page-nav .panel {
+                font-size: 30px;
+                font-weight: bold;
+            }
+            .page-nav .panel .close {
+                display: none;
+            }
+            .page-nav .panel .open {
+                display: block;
+            }
+            .page-nav ul {
+                display: none;
+                max-width: 200px;
+                max-height: 300px;
+                overflow: hidden auto;
+            }
+            .page-nav ul li {
+                border-top: 1px solid black;
+            }
+            .page-nav ul li:hover {
+                background-color: rgb(200, 200, 200);
+            }
+            .page-nav ul li a {
+                padding: 10px;
+                display: block;
+            }
+            .page-nav ul li a.active{
+                background-color: rgba(220, 20, 60, 0.5);
+            }
+            .page-nav.active .panel .close {
+                display: block;
+            }
+            .page-nav.active .panel .open {
+                display: none;
+            }
+            .page-nav.active ul {
+                display: block;
+            }`;
+        document.querySelector("head").append(style);
+        const pageNav = document.getElementById("page-nav");
+        if (pageNav) {
+            pageNav.querySelector(".panel").onclick = function () {
+                this.parentElement.classList.toggle("active");
+            };
+            const activePagePathName = location.pathname.slice(1);
+            const activePageLink = activePagePathName
+                ? pageNav.querySelector(`a[href="${activePagePathName}"]`)
+                : pageNav.querySelector(`a[href="index.html"]`);
+            if (activePageLink) activePageLink.classList.add("active");
+        }
+    </script>
+</div>

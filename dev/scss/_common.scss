@@ -1,0 +1,56 @@
+@import "base/index";
+@import "layout/common";
+@import "components/common";
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: $white;
+    &::after {
+        content: "";
+        animation: runBody 1s linear forwards;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: $white;
+        z-index: 9999;
+    }
+
+    &.no-scroll {
+        overflow: hidden;
+        height: 100%;
+    }
+}
+
+footer {
+    margin-top: auto;
+}
+.container {
+    padding-left: 13px;
+    padding-right: 13px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1920px;
+    @include media($tablet) {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+    @include media($sm-desktop) {
+        padding-left: 80px;
+        padding-right: 80px;
+    }
+    @include media($big-desktop) {
+        padding-left: 110px;
+        padding-right: 110px;
+    }
+}
+
+@include media($tablet) {
+}
+@include media($sm-desktop) {
+}
+@include media($big-desktop) {
+}

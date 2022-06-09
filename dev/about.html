@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            .desktop {
+                position: relative;
+                width: 90%;
+                margin: 0 auto;
+                border: 3px solid rgba(220, 20, 60, 0.445);
+                background-color: rgba(0, 255, 255, 0.589);
+                height: 50vh;
+            }
+            .desktop::after {
+                content: "desktop";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-family: sans-serif;
+                font-size: 50px;
+                text-transform: uppercase;
+            }
+            .mobile {
+                position: relative;
+                display: none;
+                width: 90%;
+                margin: 0 auto;
+                border: 2px solid rgba(0, 255, 255, 0.589);
+                background-color: rgba(220, 20, 60, 0.445);
+                height: 50vh;
+            }
+            .mobile::after {
+                content: "mobile";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-family: sans-serif;
+                font-size: 50px;
+                text-transform: uppercase;
+            }
+            .block {
+                width: 400px;
+                height: 200px;
+                background-color: orange;
+            }
+            @media (max-width: 768px) {
+                .desktop {
+                    display: none;
+                }
+                .mobile {
+                    display: block;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <a href="index.html">index.html</a>
+
+        <div class="desktop">
+            <span>asdad</span>
+            <div class="block">Перетаскиваемый блок</div>
+            <span>asdad</span>
+        </div>
+        <div class="mobile"></div>
+
+        <script src="js/about.js"></script>
+    </body>
+</html>

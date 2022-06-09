@@ -1,0 +1,40 @@
+//устаревший вариант
+
+// @function vw($px) {
+//     @return $px / $mobile * 100 + vw;
+// }
+
+// @function vw_t($px) {
+//     @return $px / $tablet * 100 + vw;
+// }
+
+// @function vw_sm($px) {
+//     @return $px / $sm-desktop * 100 + vw;
+// }
+
+// @function vw_b($px) {
+//     @return $px / $big-desktop * 100 + vw;
+// }
+
+@use "sass:math";
+
+@function vw($px) {
+    @return math.div($px, $mobile) * 100 + vw;
+}
+
+@function vw_t($px) {
+    @return math.div($px, $tablet) * 100 + vw;
+}
+
+@function vw_sm($px) {
+    @return math.div($px, $sm-desktop) * 100 + vw;
+}
+
+@function vw_b($px) {
+    @return math.div($px, $big-desktop) * 100 + vw;
+}
+
+@function vh($px, $screen-height) {
+    $vh: math.div($px, $screen-height) * 100;
+    @return calc(var(--vh, 1vh) * #{$vh});
+}

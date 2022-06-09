@@ -1,0 +1,28 @@
+button {
+    cursor: pointer;
+}
+.underline {
+    position: relative;
+    display: block;
+    width: fit-content;
+    line-height: 1;
+    cursor: pointer;
+    &:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -2px;
+        border-bottom: 1px solid $black;
+        transform-origin: right;
+        transition: transform 0.5s ease;
+    }
+    &:hover {
+        @include media($sm-desktop) {
+            &:before {
+                transform: scaleX(0);
+                transform-origin: left;
+            }
+        }
+    }
+}

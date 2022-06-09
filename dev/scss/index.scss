@@ -1,0 +1,70 @@
+@import "common";
+
+:root {
+    --vh: 5px;
+}
+.lol {
+    @include flex-center;
+    width: vw_t(100);
+    height: vh(100, 1000);
+    background-color: red;
+    color: $black;
+    @media (max-width: 400px) {
+        height: 80px;
+    }
+}
+.aaa {
+    font-size: 12px;
+    @media (max-width: 400px) {
+        font-size: 18px;
+    }
+    @media (max-width: 768px) {
+        font-size: 20px;
+    }
+}
+.aas {
+    display: flex;
+}
+.paragraph {
+    font-size: 40px;
+    font-family: Roboto;
+    font-weight: bold;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 200px 200px;
+    grid-gap: 20px;
+    // display: flex;
+    // justify-content: space-between;
+    // align-items: center;
+    @media (min-height: 100px) {
+        grid-gap: 30px;
+    }
+    @media (max-width: 400px) {
+        grid-gap: 40px;
+    }
+    .item {
+        background-color: lightgreen;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 30px;
+        text-transform: uppercase;
+        font-family: sans-serif;
+    }
+}
+svg {
+    background-color: blue;
+    circle {
+        rx: 130;
+        ry: 130;
+        r: 50;
+        display: flex;
+        justify-content: center;
+    }
+}
+.svg-wrap {
+    background-color: #000;
+    // background-color: red;
+}

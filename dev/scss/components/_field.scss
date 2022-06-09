@@ -1,0 +1,43 @@
+.field-wrap {
+    position: relative;
+    display: block;
+    .field {
+        border-bottom: 1px solid rgba($black, 0.4);
+        padding: 32px 0 5px;
+        display: block;
+        width: 100%;
+        @include media($big-desktop) {
+            padding: 50px 0 6px;
+        }
+        &::placeholder {
+            color: rgba($black, 0.5);
+        }
+    }
+    textarea.field {
+        resize: none;
+        overflow: hidden;
+    }
+    .tooltip {
+        position: absolute;
+        top: 100%;
+        color: $red;
+        font-size: 10px;
+        line-height: 1.8;
+        transition: 0.5s;
+
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(100%);
+        @include media($big-desktop) {
+            font-size: 14px;
+        }
+    }
+    .field.invalid {
+        border-color: $red;
+    }
+    .field.invalid + .tooltip {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
