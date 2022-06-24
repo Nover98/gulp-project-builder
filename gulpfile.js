@@ -136,6 +136,10 @@ function html() {
                 replaceImg
             )
         )
+        .pipe(
+            gulpif(mode == "production",
+                replace(/<div class="page-nav" id="page-nav">(.*?)<\/div>/gis, ""))
+        )
         .pipe(dest(path.build.html))
         .pipe(gulpif(mode == "development", browsersync.stream()));
 }
