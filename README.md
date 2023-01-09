@@ -12,5 +12,6 @@ This assembly can help with multipage site
 
 5) npm run img (build images)
 
-***There are problems with sharp module on different Node.js versions.
-It worls at least on 14.15.0, 18.12.0.***
+*There are problems with sharp module on different Node.js versions.*
+
+*It works at least on* ***14.15.0, 18.12.0.***
