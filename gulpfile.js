@@ -25,34 +25,34 @@ const cached = require("gulp-cached");
 const dependents = require("gulp-dependents");
 // -------------------------------------------------------------------------------------------
 
-const dev_folder = "dev"; //папка с исходниками для разработки
-const app_folder = "app"; //папка в которую собирается готовый проект
+const src_folder = "src"; //папка с исходниками для разработки
+const dist_folder = "dist"; //папка в которую собирается готовый проект
 
 const path = {
     build: {
-        html: app_folder + "/",
-        css: app_folder + "/css/",
-        js: app_folder + "/js/",
-        img: app_folder + "/img/",
-        fonts: app_folder + "/fonts/",
-        video: app_folder + "/video/",
+        html: dist_folder + "/",
+        css: dist_folder + "/css/",
+        js: dist_folder + "/js/",
+        img: dist_folder + "/img/",
+        fonts: dist_folder + "/fonts/",
+        video: dist_folder + "/video/",
     },
     src: {
-        html: dev_folder + "/*.html",
-        css: dev_folder + "/scss/*.scss",
-        js: dev_folder + "/js/*.js",
-        fonts: dev_folder + "/fonts/**/*.*",
-        video: dev_folder + "/video/**/*.*",
-        allImg: dev_folder + "/img-big/**/*.*",
-        mobiImg: dev_folder + "/img-big/mobi/**/*.*",
-        webpImg: dev_folder + "/img-big/webp/**/*.*",
+        html: src_folder + "/*.html",
+        css: src_folder + "/scss/*.scss",
+        js: src_folder + "/js/*.js",
+        fonts: src_folder + "/fonts/**/*.*",
+        video: src_folder + "/video/**/*.*",
+        allImg: src_folder + "/img-big/**/*.*",
+        mobiImg: src_folder + "/img-big/mobi/**/*.*",
+        webpImg: src_folder + "/img-big/webp/**/*.*",
     },
     watch: {
-        html: dev_folder + "/**/*.html",
-        css: dev_folder + "/scss/**/*.scss",
-        js: dev_folder + "/js/**/*.js",
-        fonts: dev_folder + "/fonts/**/*.*",
-        video: dev_folder + "/video/**/*.*",
+        html: src_folder + "/**/*.html",
+        css: src_folder + "/scss/**/*.scss",
+        js: src_folder + "/js/**/*.js",
+        fonts: src_folder + "/fonts/**/*.*",
+        video: src_folder + "/video/**/*.*",
     },
 };
 
@@ -68,7 +68,7 @@ function browserSync() {
     // версия браузерсинка должна стоять 2.24.6, в версиях новее есть баг в настройках по http://localhost:3001
     browsersync.init({
         server: {
-            baseDir: "./" + app_folder,
+            baseDir: "./" + dist_folder,
         },
         notify: false,
         // port: 3000
@@ -180,6 +180,7 @@ function fonts() {
     //собирает файлы стилей из папки fonts и кидает их в папку fonts на билде, с этими файлами я не работаю, они нужны только для подключения, поэтому никак модифицировать я их не буду
     return src(path.src.fonts).pipe(dest(path.build.fonts));
 }
+
 function video() {
     //собирает файлы видео из папки video и кидает их в папку video на билде, с этими файлами я не работаю, они нужны только для подключения, поэтому никак модифицировать я их не буду
     return src(path.src.video).pipe(dest(path.build.video));
@@ -204,6 +205,7 @@ function getEntries() {
     //Возвращаю объект с названием по ключу и путём по значению для вебпака
     return entries;
 }
+
 function js() {
     let webpackConfig = {
         entry: getEntries(),
@@ -218,43 +220,44 @@ function js() {
         .pipe(dest(path.build.js))
         .pipe(gulpif(mode == "development", browsersync.stream()));
 }
+
 function imgToWebp() {
     return src([
         path.src.allImg,
         "!" + path.src.mobiImg,
         "!" + path.src.webpImg,
-        "!" + dev_folder + "/img-big/**/*.svg",
-        "!" + dev_folder + "/img-big/**/*.ico",
-        "!" + dev_folder + "/img-big/**/*.gif",
+        "!" + src_folder + "/img-big/**/*.svg",
+        "!" + src_folder + "/img-big/**/*.ico",
+        "!" + src_folder + "/img-big/**/*.gif",
     ])
-        .pipe(newer(dev_folder + "/img-big/webp/"))
+        .pipe(newer(src_folder + "/img-big/webp/"))
         .pipe(webp())
-        .pipe(gulp.dest(dev_folder + "/img-big/webp/"));
+        .pipe(gulp.dest(src_folder + "/img-big/webp/"));
 }
 
 function webpSupport() {
-    return src(dev_folder + "/check_webp_supporting.webp").pipe(
-        dest(app_folder + "/")
+    return src(src_folder + "/check_webp_supporting.webp").pipe(
+        dest(dist_folder + "/")
     );
 }
 
 function resizeImg() {
     function isImages() {
         const imagesArray = glob.sync(
-            dev_folder + "/img-big/**/*.{png,jpg,jpeg}"
+            src_folder + "/img-big/**/*.{png,jpg,jpeg}"
         );
         return !!imagesArray.length;
     }
     return gulp
         .src([
             path.src.allImg,
-            "!" + dev_folder + "/img-big/**/*.svg",
-            "!" + dev_folder + "/img-big/**/*.ico",
-            "!" + dev_folder + "/img-big/**/*.gif",
-            "!" + dev_folder + "/img-big/**/nr_*.*",
-            "!" + dev_folder + "/img-big/mobi/**/*.*",
+            "!" + src_folder + "/img-big/**/*.svg",
+            "!" + src_folder + "/img-big/**/*.ico",
+            "!" + src_folder + "/img-big/**/*.gif",
+            "!" + src_folder + "/img-big/**/nr_*.*",
+            "!" + src_folder + "/img-big/mobi/**/*.*",
         ])
-        .pipe(gulpif(isImages(), newer(dev_folder + "/img-big/mobi")))
+        .pipe(gulpif(isImages(), newer(src_folder + "/img-big/mobi")))
         .pipe(
             gulpif(
                 isImages(), //это нужно потому, что если в сборке нет картинок, а этот таск не закоменчен, то выплёвывается ошибка на работе респонсива
@@ -265,7 +268,7 @@ function resizeImg() {
                 })
             )
         )
-        .pipe(gulpif(isImages(), gulp.dest(dev_folder + "/img-big/mobi")));
+        .pipe(gulpif(isImages(), gulp.dest(src_folder + "/img-big/mobi")));
 }
 
 function imgToBuild() {
@@ -297,9 +300,9 @@ function watchFiles() {
     );
 }
 
-//удаляет папку app_folder (в которую собирается проект) и генерируемые новые папки с картинками в папке dev
+//удаляет папку dist_folder (в которую собирается проект) и генерируемые новые папки с картинками в папке src_folder
 function clean() {
-    return del(["app", "dev/img-big/webp", "dev/img-big/mobi"]);
+    return del([dist_folder, `${src_folder}/img-big/webp`, `${src_folder}/img-big/mobi`]);
 }
 
 let dev = gulp.series(
