@@ -302,7 +302,7 @@ function clean() {
     return del(["app", "dev/img-big/webp", "dev/img-big/mobi"]);
 }
 
-let build = gulp.series(
+let dev = gulp.series(
     gulp.parallel(
         html,
         css,
@@ -315,7 +315,7 @@ let build = gulp.series(
     gulp.parallel(browserSync, watchFiles)
 );
 
-let buildToProd = gulp.series(
+let build = gulp.series(
     setProdMode,
     gulp.parallel(
         html,
@@ -331,5 +331,5 @@ let buildToProd = gulp.series(
 exports.img = gulp.series(imgToWebp, resizeImg, imgToBuild);
 exports.clean = clean;
 
-exports.default = gulp.series(clean, build);
-exports.prod = gulp.series(clean, buildToProd);
+exports.dev = gulp.series(clean, dev);
+exports.build = gulp.series(clean, build);

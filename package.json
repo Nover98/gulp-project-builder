@@ -1,13 +1,13 @@
 {
     "name": "test",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "main": "index.js",
     "license": "ISC",
     "scripts": {
-        "gulp": "gulp",
-        "gulp prod": "gulp prod",
-        "gulp clean": "gulp clean",
-        "gulp img": "gulp img"
+        "dev": "gulp dev",
+        "build": "gulp build",
+        "clean": "gulp clean",
+        "img": "gulp img"
     },
     "repository": {
         "type": "git",
