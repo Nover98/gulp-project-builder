@@ -1,12 +1,10 @@
 "use strict";
 
-const { src, dest } = require("gulp");
-
+const gulp = require("gulp");
 const autoprefixer = require("autoprefixer");
 const browsersync = require("browser-sync").create();
 const del = require("del");
 const glob = require("glob");
-const gulp = require("gulp");
 const fileinclude = require("gulp-file-include");
 const imagemin = require("gulp-imagemin");
 const newer = require("gulp-newer");
@@ -128,7 +126,7 @@ function replaceImg(all, start, srcStart, srcMiddle, type, srcEnd, end) {
 }
 
 function html() {
-    return src(path.src.html)
+    return gulp.src(path.src.html)
         .pipe(fileinclude())
         .pipe(
             replace(
@@ -140,7 +138,7 @@ function html() {
             gulpif(mode == "production",
                 replace(/<div class="page-nav" id="page-nav">(.*?)<\/div>/gis, ""))
         )
-        .pipe(dest(path.build.html))
+        .pipe(gulp.dest(path.build.html))
         .pipe(gulpif(mode == "development", browsersync.stream()));
 }
 
@@ -161,7 +159,7 @@ function css() {
         }),
     ];
     return (
-        src(path.src.css)
+        gulp.src(path.src.css)
             // .pipe(gulpif(mode == "development", cached("scss")))
             // .pipe(gulpif(mode == "development", dependents()))
             .pipe(gulpif(mode == "development", sourcemaps.init()))
@@ -171,19 +169,19 @@ function css() {
             .pipe(
                 gulpif(mode == "development", sourcemaps.write("/sourcemaps"))
             )
-            .pipe(dest(path.build.css))
+            .pipe(gulp.dest(path.build.css))
             .pipe(gulpif(mode == "development", browsersync.stream()))
     );
 }
 
 function fonts() {
     //собирает файлы стилей из папки fonts и кидает их в папку fonts на билде, с этими файлами я не работаю, они нужны только для подключения, поэтому никак модифицировать я их не буду
-    return src(path.src.fonts).pipe(dest(path.build.fonts));
+    return gulp.src(path.src.fonts).pipe(gulp.dest(path.build.fonts));
 }
 
 function video() {
     //собирает файлы видео из папки video и кидает их в папку video на билде, с этими файлами я не работаю, они нужны только для подключения, поэтому никак модифицировать я их не буду
-    return src(path.src.video).pipe(dest(path.build.video));
+    return gulp.src(path.src.video).pipe(gulp.dest(path.build.video));
 }
 
 function getEntries() {
@@ -198,7 +196,7 @@ function getEntries() {
         //здесь у последней части пути (это и есть название файла и его расшиерение) убираю расширение и точку (.js), поэтому стоит "-3"
         let fileName = pathParts[pathParts.length - 1].slice(0, -3);
 
-        //кладу по ключу fileName кладу путь к файлу
+        //по ключу fileName кладу путь к файлу
         entries[fileName] = "./" + path;
     });
 
@@ -215,20 +213,18 @@ function js() {
         mode: mode,
     };
     if (mode == "development") webpackConfig.devtool = "eval-cheap-source-map";
-    return src(path.src.js)
+    return gulp.src(path.src.js)
         .pipe(webpack(webpackConfig))
-        .pipe(dest(path.build.js))
+        .pipe(gulp.dest(path.build.js))
         .pipe(gulpif(mode == "development", browsersync.stream()));
 }
 
 function imgToWebp() {
-    return src([
+    return gulp.src([
         path.src.allImg,
         "!" + path.src.mobiImg,
         "!" + path.src.webpImg,
-        "!" + src_folder + "/img-big/**/*.svg",
-        "!" + src_folder + "/img-big/**/*.ico",
-        "!" + src_folder + "/img-big/**/*.gif",
+        "!" + src_folder + "/img-big/**/*.{svg,ico,gif}",
     ])
         .pipe(newer(src_folder + "/img-big/webp/"))
         .pipe(webp())
@@ -236,31 +232,28 @@ function imgToWebp() {
 }
 
 function webpSupport() {
-    return src(src_folder + "/check_webp_supporting.webp").pipe(
-        dest(dist_folder + "/")
+    return gulp.src(src_folder + "/check_webp_supporting.webp").pipe(
+        gulp.dest(dist_folder + "/")
     );
 }
 
 function resizeImg() {
-    function isImages() {
-        const imagesArray = glob.sync(
-            src_folder + "/img-big/**/*.{png,jpg,jpeg}"
-        );
-        return !!imagesArray.length;
-    }
+    const imagesArray = glob.sync(
+        src_folder + "/img-big/**/*.{png,jpg,jpeg,webp}"
+    );
+    const isImages = !!imagesArray.length;
+
     return gulp
         .src([
             path.src.allImg,
-            "!" + src_folder + "/img-big/**/*.svg",
-            "!" + src_folder + "/img-big/**/*.ico",
-            "!" + src_folder + "/img-big/**/*.gif",
+            "!" + src_folder + "/img-big/**/*.{svg,ico,gif}",
             "!" + src_folder + "/img-big/**/nr_*.*",
             "!" + src_folder + "/img-big/mobi/**/*.*",
         ])
-        .pipe(gulpif(isImages(), newer(src_folder + "/img-big/mobi")))
+        .pipe(newer(src_folder + "/img-big/mobi"))
         .pipe(
             gulpif(
-                isImages(), //это нужно потому, что если в сборке нет картинок, а этот таск не закоменчен, то выплёвывается ошибка на работе респонсива
+                isImages, //это нужно потому, что если в сборке нет картинок, а этот таск не закоменчен, то выплёвывается ошибка на работе респонсива
                 responsive({
                     "**/*": {
                         width: "50%",
@@ -268,7 +261,7 @@ function resizeImg() {
                 })
             )
         )
-        .pipe(gulpif(isImages(), gulp.dest(src_folder + "/img-big/mobi")));
+        .pipe(gulp.dest(src_folder + "/img-big/mobi"));
 }
 
 function imgToBuild() {
@@ -289,15 +282,14 @@ function imgToBuild() {
 
 function watchFiles() {
     //следит за изменениями в файлах
+    const imgPath = [path.src.allImg, "!" + path.src.mobiImg, "!" + path.src.webpImg];
+
     gulp.watch([path.watch.html], html);
     gulp.watch([path.watch.css], css);
     gulp.watch([path.watch.js], js);
     gulp.watch([path.watch.video], video);
     gulp.watch([path.watch.fonts], fonts);
-    gulp.watch(
-        [path.src.allImg, "!" + path.src.mobiImg, "!" + path.src.webpImg],
-        gulp.series(imgToWebp, resizeImg, imgToBuild)
-    );
+    gulp.watch(imgPath, workWithImg);
 }
 
 //удаляет папку dist_folder (в которую собирается проект) и генерируемые новые папки с картинками в папке src_folder
@@ -305,7 +297,9 @@ function clean() {
     return del([dist_folder, `${src_folder}/img-big/webp`, `${src_folder}/img-big/mobi`]);
 }
 
-let dev = gulp.series(
+const workWithImg = gulp.series(imgToWebp, resizeImg, imgToBuild);
+
+const dev = gulp.series(
     gulp.parallel(
         html,
         css,
@@ -313,12 +307,12 @@ let dev = gulp.series(
         fonts,
         video,
         webpSupport, //это часто можно убрать вообще
-        gulp.series(imgToWebp, resizeImg, imgToBuild)
+        workWithImg
     ),
     gulp.parallel(browserSync, watchFiles)
 );
 
-let build = gulp.series(
+const build = gulp.series(
     setProdMode,
     gulp.parallel(
         html,
@@ -327,11 +321,11 @@ let build = gulp.series(
         fonts,
         video,
         webpSupport, //это часто можно убрать вообще
-        gulp.series(imgToWebp, resizeImg, imgToBuild)
+        workWithImg
     )
 );
 
-exports.img = gulp.series(imgToWebp, resizeImg, imgToBuild);
+exports.img = workWithImg;
 exports.clean = clean;
 
 exports.dev = gulp.series(clean, dev);
