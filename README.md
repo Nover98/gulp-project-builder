@@ -24,3 +24,26 @@ I don't know what happens with browser-sync right now, but last well-working ver
 As far as I understood [gulp-sass 5.1.0](https://github.com/dlmanning/gulp-sass/releases/tag/v5.1.0) works with node.js 16+ and npm7+.
 One of the commits: 
 > Update devDependencies and switch to Node.js 16/npm 7+
+
+
+
+## To do
+
+1. translate all the comments in gulpfile into English
+
+2. look at this 
+```js
+	let mode = "development";
+	function setProdMode(callback) {
+		callback();
+		mode = "production";
+	}
+```
+
+if i can simplify this
+
+3. Make new scss structure with @use and @forward instead of @import
+
+4. Move non-resize logic from names to attributes
+
+5. Replace common js modules with ESM ones when all the dependencies will be ready for it
